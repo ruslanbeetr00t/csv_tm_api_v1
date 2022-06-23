@@ -13,7 +13,7 @@ from endpoint import PingPong
 def ping_pong_connect():
     try:
         while True:
-            time.sleep(3)
+            time.sleep(35)
             payloads = {'key': API}
             response = requests.get(url=PingPong, headers=user_agent, params=payloads)
             if response.status_code == 200:

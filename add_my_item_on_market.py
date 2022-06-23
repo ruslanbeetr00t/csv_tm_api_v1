@@ -17,8 +17,8 @@ def add_item_on_market():
             time.sleep(3)
             payloads = {"key": API}
             """тут передача аргументів про предмет через params=payload не працює"""
-            url_add_item_om_market = f'{SetPrice}{item["i_classid"]}_{item["i_instanceid"]}/{item["max_price"]}'
-            response = requests.post(url=url_add_item_om_market, headers=user_agent, params=payloads)
+            url_add_item_om_market = f'{SetPrice}{item["i_classid"]}_{item["i_instanceid"]}/{int(item["max_price"]) * 100}'
+            response = requests.post(url=url_add_item_om_market, params=payloads, headers=user_agent)
             if response.status_code == 200:
                 pprint(response.json())
             else:
