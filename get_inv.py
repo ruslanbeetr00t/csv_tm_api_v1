@@ -19,6 +19,7 @@ def get_inv_info():
                 item["min_price"] = 0.00
                 item["max_price"] = 0.00
                 item["on_market"] = 0
+                item['bot_my_price'] = None
                 item_box.append(item)
         with open(f'{absolute_path_get_inv}/get_inv.json', 'w', encoding='utf-8') as file_json:
             json.dump(item_box, file_json, ensure_ascii=False, indent=4)

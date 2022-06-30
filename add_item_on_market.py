@@ -14,25 +14,23 @@ def sell_bot():
     try:
         while True:
             for item_on_market in my_items_on_market:
-                time.sleep(3)
                 if item_on_market["on_market"] == 1:
                     get_enemy_price_url = f'{SellOffers}{item_on_market["i_classid"]}_{item_on_market["i_instanceid"]}'
                     payloads = {'key': API}
                     response = requests.get(url=get_enemy_price_url, params=payloads, headers=user_agent)
                     if response.status_code == 200:
-                        """максимально деревяний варіант"""
-                        item_box_price = response.json()
-                        if item_on_market['min_price'] >= item_box_price['best_offer']:
+                        item_best_offer = response.json()["best_offer"]
+                        if int(item_best_offer) > int(item_on_market['min_price'] * 100) and int(item_best_offer) < int(item_on_market['max_price'] * 100):
+                            my_price = int(item_best_offer) - 10
+                            item_on_market['bot_my_price'] = my_price
+                            url_mass_set_price = f'{MassSetPrice}{item_on_market["i_classid"]}_{item_on_market["i_instanceid"]}/{my_price}'
+                            response = requests.post(url=url_mass_set_price, params=payloads, headers=user_agent)
+                            if response.status_code == 200:
+                                print(f"{response.json()['items'][0]['market_hash_name']}:- {response.json()['items'][0]['price']}")
+                        elif int(item_best_offer) > int(item_on_market['min_price'] * 100):
+                            print(f"Need to change the price:- {item_on_market['i_market_name']}, ui_id:- {item_on_market['ui_id']}")
                             continue
-                        else:
-                            if int(item_box_price['offers'][0]['price']) > int(item_on_market['min_price'] * 100) and int(item_box_price['offers'][0]['price']) < int(item_on_market['max_price'] * 100):
-                                url_mass_set_price = f'{MassSetPrice}{item_on_market["i_classid"]}_{item_on_market["i_instanceid"]}'
-                                response = requests.post(url=url_mass_set_price, params=payloads, headers=user_agent)
-                                if response.status_code == 200:
-                                    print(f"{response.json()['items'][0]['market_hash_name']}:- {response.json()['items'][0]['price']}")
-                            else:
-                                if int(item_box_price['offers'][0]['price']) < int(item_on_market['min_price'] * 100):
-                                    print(f"Price changes{response.json()['items'][0]['market_hash_name']}")
+                        time.sleep(3)
                 else:
                     continue
     except requests.exceptions.Timeout as msg_err:
@@ -52,4 +50,3 @@ def sell_bot():
 if __name__ == "__main__":
     sell_bot()
 
-#ok
