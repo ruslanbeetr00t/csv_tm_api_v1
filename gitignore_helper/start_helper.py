@@ -26,7 +26,7 @@ def write_info_in_file():
         print(info)
         if info == 'settings.py':
             with open('settings.py', 'w') as file_py:
-                file_py.write('API = ""\n\n\nuser_agent = {"User-Agent": ""}\n\n\nTOKEN = ""')
+                file_py.write('API = ""\n\n\nuser_agent = {"User-Agent": ""}\n\n\nTOKEN = ""\n\n\nabsolute_path_get_inv = ""\n\n\nstandart_price = 100')
         elif info == 'endpoint.py':
             with open('endpoint.py', 'w') as file_py:
                 file_py.write('GetInv = ""\n\nTrades = ""\n\nGetMoney = ""\n\nGoOffline = ""\n\nGetToken = '
